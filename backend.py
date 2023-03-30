@@ -3,7 +3,7 @@ import subprocess
 
 ImgPath = ""
 LogPath = "./theImages/vgg19/004/50_19push0.0986.pth/local_analysis.log"
-# subprocess.call(['bash', '____.sh'])
+# subprocess.call(['bash', 'python3 local_anlysis.py'])
 
 lines = []
 # Read the log file to extract the information
@@ -115,7 +115,20 @@ for i in sortedClassNumbers:
 
 	classListDict.append(theDict)
 
+originalImageDict = {}
+
+theLines = []
+
+with open("coordinates.txt", "r") as f:
+    for line in f:
+        nums = [int(x) for x in line.strip().split()]
+        theLines.append(nums)
+f.close()
+
+# print(theLines)
+
 jsonDict["classes"] = classListDict
+jsonDict["image"] = {"url": folderPath + directories[0] + "/original_img.png", "boxes": theLines[:10]} 
 import json
 jsonStr = json.dumps(jsonDict)
 
@@ -123,7 +136,7 @@ f = open("backendJSON.json", "w")
 f.write(jsonStr)
 f.close()
 
-print (jsonStr)
+# print (jsonStr)
 
 
 # folder_path += directories[0]
